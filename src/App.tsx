@@ -2,7 +2,7 @@ import './App.css'
 import { useEffect, useRef, useState } from 'react'
 
 export default function App() {
-  const [isSCounting, setIsSCounting] = useState(false)
+  const [isSCounting, setIsCounting] = useState(false)
   const [timeDuration, setTimeDuration] = useState(0)
   // store intervalID
   const intervalIDRef = useRef<number | undefined>(undefined)
@@ -22,10 +22,10 @@ export default function App() {
     // clear interval before start
     clearInterval(intervalIDRef.current)
 
-    setIsSCounting(true)
+    setIsCounting(true)
     console.log('start')
 
-    // creat new interval andd store intervalIDRef
+    // creat new interval andd store in intervalIDRef
     // myInterval = setInterval(function, milliseconds)
     intervalIDRef.current = setInterval(() => {
       // Update setTimeDuration state multiple times in one event
@@ -36,8 +36,15 @@ export default function App() {
     }, 1000)
   }
 
+  function handlePause() {
+    setIsCounting(false)
+    // cancel existing interval
+    clearInterval(intervalIDRef.current)
+    console.log('pause')
+  }
+
   function handleReset() {
-    setIsSCounting(false)
+    setIsCounting(false)
     setTimeDuration(0)
     clearInterval(intervalIDRef.current)
     intervalIDRef.current = undefined
@@ -52,7 +59,7 @@ export default function App() {
         <span>{timeDuration}</span>
       </div>
       {isSCounting ? (
-        <button>Pause</button>
+        <button onClick={handlePause}>Pause</button>
       ) : (
         <button onClick={handleStart}>Start</button>
       )}
