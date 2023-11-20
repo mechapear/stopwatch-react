@@ -46,12 +46,14 @@ export default function App() {
     console.log('stop')
   }
 
+  const { hours, minutes, seconds } = getTimeUnit(timeDuration)
+
   return (
     <>
       <div>
-        <span>00:</span>
-        <span>00:</span>
-        <span>{timeDuration}</span>
+        <span>{addLeadingZero(hours)}:</span>
+        <span>{addLeadingZero(minutes)}:</span>
+        <span>{addLeadingZero(seconds)}</span>
       </div>
       {isCounting ? (
         <button onClick={handlePause}>Pause</button>
@@ -61,4 +63,16 @@ export default function App() {
       <button onClick={handleReset}>Reset</button>
     </>
   )
+}
+
+function getTimeUnit(time: number) {
+  const hours = Math.floor(time / 3600)
+  const minutes = Math.floor((time - hours * 3600) / 60)
+  const seconds = time - hours * 3600 - minutes * 60
+
+  return { hours, minutes, seconds }
+}
+
+function addLeadingZero(numTime: number): string {
+  return numTime.toString().padStart(2, '0')
 }
