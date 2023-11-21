@@ -13,10 +13,7 @@ export default function App() {
       // creat new interval andd store in intervalIDRef
       // myInterval = setInterval(function, milliseconds)
       interval = setInterval(() => {
-        setTimeDuration((prevTimeDuration) => {
-          console.log(`prevTimeDuration: `, prevTimeDuration)
-          return prevTimeDuration + 1
-        })
+        setTimeDuration((prevTimeDuration) => prevTimeDuration + 1)
       }, 1000)
     } else {
       clearInterval(interval)
@@ -26,24 +23,20 @@ export default function App() {
     // clear interval when component unmount
     return () => {
       clearInterval(interval)
-      console.log('cleanup')
     }
   }, [isCounting]) // only run when isCounting state change
 
   function handleStart() {
     setIsCounting(true)
-    console.log('start')
   }
 
   function handlePause() {
     setIsCounting(false)
-    console.log('pause')
   }
 
   function handleReset() {
     setIsCounting(false)
     setTimeDuration(0)
-    console.log('stop')
   }
 
   const { hours, minutes, seconds } = getTimeUnit(timeDuration)
