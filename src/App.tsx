@@ -10,11 +10,9 @@ export default function App() {
   // prevent memory leak
   // clear interval when component unmount
   useEffect(() => {
-    console.log('useEffect')
     // clean up function
     return () => {
       clearInterval(intervalIDRef.current)
-      console.log('cleanup')
     }
   }, [])
 
@@ -23,16 +21,12 @@ export default function App() {
     clearInterval(intervalIDRef.current)
 
     setIsCounting(true)
-    console.log('start')
 
     // creat new interval andd store in intervalIDRef
     // myInterval = setInterval(function, milliseconds)
     intervalIDRef.current = setInterval(() => {
       // Update setTimeDuration state multiple times in one event
-      setTimeDuration((prevTimeDuration) => {
-        console.log(`prevTimeDuration: `, prevTimeDuration)
-        return prevTimeDuration + 1
-      })
+      setTimeDuration((prevTimeDuration) => prevTimeDuration + 1)
     }, 1000)
   }
 
@@ -40,7 +34,6 @@ export default function App() {
     setIsCounting(false)
     // cancel existing interval
     clearInterval(intervalIDRef.current)
-    console.log('pause')
   }
 
   function handleReset() {
@@ -48,24 +41,28 @@ export default function App() {
     setTimeDuration(0)
     clearInterval(intervalIDRef.current)
     intervalIDRef.current = undefined
-    console.log('stop')
   }
 
   const { hours, minutes, seconds } = getTimeUnit(timeDuration)
 
   return (
     <>
-      <div>
-        <span>{addLeadingZero(hours)}:</span>
-        <span>{addLeadingZero(minutes)}:</span>
-        <span>{addLeadingZero(seconds)}</span>
+      <div className="containner">
+        <h1>Stopwatch</h1>
+        <div className="time-duration">
+          <span>{addLeadingZero(hours)}:</span>
+          <span>{addLeadingZero(minutes)}:</span>
+          <span>{addLeadingZero(seconds)}</span>
+        </div>
+        <div className="time-control">
+          {isCounting ? (
+            <button onClick={handlePause}>Pause</button>
+          ) : (
+            <button onClick={handleStart}>Start</button>
+          )}
+          <button onClick={handleReset}>Reset</button>
+        </div>
       </div>
-      {isCounting ? (
-        <button onClick={handlePause}>Pause</button>
-      ) : (
-        <button onClick={handleStart}>Start</button>
-      )}
-      <button onClick={handleReset}>Reset</button>
     </>
   )
 }
